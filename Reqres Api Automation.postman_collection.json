@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "b56dc777-4940-4bf2-9ee0-36c89f05701c",
+		"name": "Reqres Api Automation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46007201",
+		"_collection_link": "https://david-indra.postman.co/workspace/David-Indra's-Workspace~c7e86826-46e6-42e2-8b75-283ccf84c40c/collection/46007201-b56dc777-4940-4bf2-9ee0-36c89f05701c?action=share&source=collection_link&creator=46007201"
+	},
+	"item": [
+		{
+			"name": "One Get Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test 1: Periksa apakah kode statusnya 200 OK\r",
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Periksa apakah respons memiliki data yang diharapkan (misalnya, data.length > 0)\r",
+							"pm.test(\"Response has data and data.length > 0\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.data).to.be.an('array'); // Memastikan 'data' adalah array\r",
+							"    pm.expect(responseJson.data.length).to.be.above(0); // Memastikan array 'data' tidak kosong\r",
+							"});\r",
+							"\r",
+							"// Opsional: Test 3: Periksa struktur dasar respons\r",
+							"pm.test(\"Response has expected properties (page, per_page, total, total_pages, data)\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.have.property('page');\r",
+							"    pm.expect(responseJson).to.have.property('per_page');\r",
+							"    pm.expect(responseJson).to.have.property('total');\r",
+							"    pm.expect(responseJson).to.have.property('total_pages');\r",
+							"    pm.expect(responseJson).to.have.property('data');\r",
+							"});\r",
+							"\r",
+							"// Opsional: Test 4: Periksa tipe data dari item pertama di array 'data'\r",
+							"pm.test(\"First data item has id, email, first_name, last_name, avatar\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    if (responseJson.data && responseJson.data.length > 0) {\r",
+							"        const firstUser = responseJson.data[0];\r",
+							"        pm.expect(firstUser).to.have.property('id');\r",
+							"        pm.expect(firstUser).to.have.property('email');\r",
+							"        pm.expect(firstUser).to.have.property('first_name');\r",
+							"        pm.expect(firstUser).to.have.property('last_name');\r",
+							"        pm.expect(firstUser).to.have.property('avatar');\r",
+							"    } else {\r",
+							"        // Jika tidak ada data, test ini mungkin gagal atau dilewati tergantung kebutuhan\r",
+							"        console.warn(\"No data found to test individual item properties.\");\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users?page=2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "One Post Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test 1: Periksa apakah kode statusnya 201 Created\r",
+							"pm.test(\"Status code is 201 Created\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Periksa apakah respons memiliki properti 'id' dan 'createdAt'\r",
+							"pm.test(\"Response has 'id' and 'createdAt' properties\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.have.property('id');\r",
+							"    pm.expect(responseJson).to.have.property('createdAt');\r",
+							"});\r",
+							"\r",
+							"// Test 3: Periksa apakah nama yang dikirimkan sesuai dengan nama di respons\r",
+							"pm.test(\"Returned name matches sent name\", function () {\r",
+							"    const requestBody = pm.request.body.raw; // Mengambil body permintaan\r",
+							"    const sentData = JSON.parse(requestBody); // Mengurai body permintaan\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.name).to.eql(sentData.name);\r",
+							"});\r",
+							"\r",
+							"// Test 4: Periksa apakah job yang dikirimkan sesuai dengan job di respons\r",
+							"pm.test(\"Returned job matches sent job\", function () {\r",
+							"    const requestBody = pm.request.body.raw;\r",
+							"    const sentData = JSON.parse(requestBody);\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.job).to.eql(sentData.job);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Gemini AI\",\r\n    \"job\": \"AI Assistant\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "One Patch Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test 1: Periksa apakah kode statusnya 200 OK\r",
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Test 2: Periksa apakah respons memiliki properti 'updatedAt'\r",
+							"pm.test(\"Response has 'updatedAt' property\", function () {\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson).to.have.property('updatedAt');\r",
+							"});\r",
+							"\r",
+							"// Test 3: Periksa apakah 'job' yang diperbarui sesuai dengan yang dikirimkan\r",
+							"pm.test(\"Updated job matches sent job\", function () {\r",
+							"    const requestBody = pm.request.body.raw;\r",
+							"    const sentData = JSON.parse(requestBody);\r",
+							"    const responseJson = pm.response.json();\r",
+							"    pm.expect(responseJson.job).to.eql(sentData.job);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"job\": \"Lead AI Engineer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "One Delete Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Test 1: Periksa apakah kode statusnya 204 No Content (paling umum untuk DELETE yang berhasil)\r",
+							"pm.test(\"Status code is 204 No Content\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							"// Opsional Test 2: Periksa apakah tidak ada body dalam respons\r",
+							"// Beberapa API mungkin mengembalikan body kosong atau pesan sukses singkat\r",
+							"pm.test(\"Response body is empty\", function () {\r",
+							"    pm.expect(pm.response.text()).to.be.empty;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-api-key",
+						"value": "reqres-free-v1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
