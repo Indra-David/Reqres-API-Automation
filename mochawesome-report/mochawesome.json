@@ -1,0 +1,170 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 1,
+    "pending": 0,
+    "failures": 3,
+    "start": "2025-06-20T16:53:23.996Z",
+    "end": "2025-06-20T16:53:25.565Z",
+    "duration": 1569,
+    "testsRegistered": 4,
+    "passPercent": 25,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "19950318-cc3c-4dcc-a70c-a413d3a08257",
+      "title": "",
+      "fullFile": "C:\\Users\\AYYESA - ARRAZI\\Documents\\reqres-api-automation-mocha\\test\\users.test.js",
+      "file": "\\test\\users.test.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "aaf43e46-21aa-43f5-b110-f95fa1522b65",
+          "title": "User API Tests",
+          "fullFile": "C:\\Users\\AYYESA - ARRAZI\\Documents\\reqres-api-automation-mocha\\test\\users.test.js",
+          "file": "\\test\\users.test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should get a list of users from page 2",
+              "fullTitle": "User API Tests should get a list of users from page 2",
+              "timedOut": false,
+              "duration": 339,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "try {\n    const response = await axios.get(`${BASE_URL}/users?page=2`);\n    // Assertion 1: Kode status harus 200 OK\n    expect(response.status).to.equal(200);\n    // Assertion 2: Respons harus memiliki properti 'data' yang berupa array\n    expect(response.data).to.have.property('data');\n    expect(response.data.data).to.be.an('array');\n    // Assertion 3: Array 'data' tidak boleh kosong\n    expect(response.data.data.length).to.be.above(0);\n    // Assertion 4: Memastikan bahwa 'page' adalah 2\n    expect(response.data.page).to.equal(2);\n    console.log('GET Response Data:', response.data.data[0]); // Contoh log\n} catch (error) {\n    console.error('GET Request Failed:', error.message);\n    throw error; // Melempar error agar test gagal\n}",
+              "err": {},
+              "uuid": "b4203cca-4132-4160-ba83-137855b986ff",
+              "parentUUID": "aaf43e46-21aa-43f5-b110-f95fa1522b65",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should create a new user",
+              "fullTitle": "User API Tests should create a new user",
+              "timedOut": false,
+              "duration": 401,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const newUser = {\n    name: \"Gemini Automation\",\n    job: \"QA Engineer\"\n};\ntry {\n    const response = await axios.post(`${BASE_URL}/users`, newUser);\n    // Assertion 1: Kode status harus 201 Created\n    expect(response.status).to.equal(201);\n    // Assertion 2: Respons harus memiliki properti 'id' dan 'createdAt'\n    expect(response.data).to.have.property('id');\n    expect(response.data).to.have.property('createdAt');\n    // Assertion 3: Nama yang dikirimkan harus cocok dengan nama di respons\n    expect(response.data.name).to.equal(newUser.name);\n    // Assertion 4: Pekerjaan yang dikirimkan harus cocok dengan pekerjaan di respons\n    expect(response.data.job).to.equal(newUser.job);\n    console.log('POST Response Data:', response.data); // Contoh log\n} catch (error) {\n    console.error('POST Request Failed:', error.message);\n    throw error;\n}",
+              "err": {
+                "message": "AxiosError: Request failed with status code 401",
+                "estack": "AxiosError: Request failed with status code 401\n    at settle (node_modules\\axios\\dist\\node\\axios.cjs:2053:12)\n    at IncomingMessage.handleStreamEnd (node_modules\\axios\\dist\\node\\axios.cjs:3170:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (node_modules\\axios\\dist\\node\\axios.cjs:4280:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Context.<anonymous> (test\\users.test.js:43:30)",
+                "diff": null
+              },
+              "uuid": "718779a2-0b45-4a60-84e2-d14bacf6522f",
+              "parentUUID": "aaf43e46-21aa-43f5-b110-f95fa1522b65",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should partially update an existing user",
+              "fullTitle": "User API Tests should partially update an existing user",
+              "timedOut": false,
+              "duration": 389,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const userIdToUpdate = 2; // Contoh ID pengguna yang akan diperbarui\nconst updatedData = {\n    job: \"Senior QA Automation Engineer\"\n};\ntry {\n    const response = await axios.patch(`${BASE_URL}/users/${userIdToUpdate}`, updatedData);\n    // Assertion 1: Kode status harus 200 OK\n    expect(response.status).to.equal(200);\n    // Assertion 2: Respons harus memiliki properti 'updatedAt'\n    expect(response.data).to.have.property('updatedAt');\n    // Assertion 3: Pekerjaan yang diperbarui harus cocok dengan yang dikirimkan\n    expect(response.data.job).to.equal(updatedData.job);\n    console.log('PATCH Response Data:', response.data); // Contoh log\n} catch (error) {\n    console.error('PATCH Request Failed:', error.message);\n    throw error;\n}",
+              "err": {
+                "message": "AxiosError: Request failed with status code 401",
+                "estack": "AxiosError: Request failed with status code 401\n    at settle (node_modules\\axios\\dist\\node\\axios.cjs:2053:12)\n    at IncomingMessage.handleStreamEnd (node_modules\\axios\\dist\\node\\axios.cjs:3170:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (node_modules\\axios\\dist\\node\\axios.cjs:4280:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Context.<anonymous> (test\\users.test.js:72:30)",
+                "diff": null
+              },
+              "uuid": "e65ca0f3-b4fd-4a9e-ab46-00a75a5f3482",
+              "parentUUID": "aaf43e46-21aa-43f5-b110-f95fa1522b65",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should delete an existing user",
+              "fullTitle": "User API Tests should delete an existing user",
+              "timedOut": false,
+              "duration": 424,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const userIdToDelete = 2; // Contoh ID pengguna yang akan dihapus\ntry {\n    const response = await axios.delete(`${BASE_URL}/users/${userIdToDelete}`);\n    // Assertion 1: Kode status harus 204 No Content\n    // (reqres.in mengembalikan 204 untuk DELETE berhasil)\n    expect(response.status).to.equal(204);\n    // Assertion 2 (Opsional): Respons body seharusnya kosong untuk 204 No Content\n    expect(response.data).to.be.empty; // Untuk Axios, respons.data adalah objek kosong jika tidak ada body\n    console.log('DELETE Request Successful (No content expected)'); // Contoh log\n} catch (error) {\n    console.error('DELETE Request Failed:', error.message);\n    throw error;\n}",
+              "err": {
+                "message": "AxiosError: Request failed with status code 401",
+                "estack": "AxiosError: Request failed with status code 401\n    at settle (node_modules\\axios\\dist\\node\\axios.cjs:2053:12)\n    at IncomingMessage.handleStreamEnd (node_modules\\axios\\dist\\node\\axios.cjs:3170:11)\n    at IncomingMessage.emit (node:events:530:35)\n    at endReadableNT (node:internal/streams/readable:1698:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)\n    at Axios.request (node_modules\\axios\\dist\\node\\axios.cjs:4280:41)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async Context.<anonymous> (test\\users.test.js:94:30)",
+                "diff": null
+              },
+              "uuid": "6edf8596-bcf7-4381-9738-fc5d46a880aa",
+              "parentUUID": "aaf43e46-21aa-43f5-b110-f95fa1522b65",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "b4203cca-4132-4160-ba83-137855b986ff"
+          ],
+          "failures": [
+            "718779a2-0b45-4a60-84e2-d14bacf6522f",
+            "e65ca0f3-b4fd-4a9e-ab46-00a75a5f3482",
+            "6edf8596-bcf7-4381-9738-fc5d46a880aa"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 1553,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 5000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 5000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "11.7.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.2.0"
+    }
+  }
+}
